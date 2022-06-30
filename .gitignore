@@ -1,0 +1,5 @@
+node_modules/
+files/
+dist/
+config.json
+yarn-error.log
