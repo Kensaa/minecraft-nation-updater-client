@@ -46,6 +46,27 @@ function prompt(question: string): Promise<string> {
     await prompt('Appuyez sur entrer pour commencer la mise à jour');
 
 
+    const hashes = await (await fetch(config.server + 'hashes')).json();
+    fs.writeFileSync('hashes.json',JSON.stringify(hashes,null,4));
+    
+    fs.writeFileSync('test.json',JSON.stringify(discoverHashTree(hashes),null,4));
+    function discoverHashTree(tree:{[k: string]: Object | string},filePath:string[]=[]): {path:string,hash:string}[]{
+        const res = []
+        const keys = Object.keys(tree);
+        for(let key of keys){
+            if(typeof tree[key] === 'string'){
+                res.push({path:path.join(...filePath, key), hash:tree[key] as string})
+            }
+            else{
+                res.push(...discoverHashTree(tree[key] as {[k: string]: Object | string},[...filePath,key]));
+            }
+        }
+        return res;
+    }
+
 
 })()
 
+async function updateFile(src:string){
+
+}

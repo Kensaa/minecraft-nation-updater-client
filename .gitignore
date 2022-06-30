@@ -3,3 +3,5 @@ files/
 dist/
 config.json
 yarn-error.log
+hashes.json
+test.json
