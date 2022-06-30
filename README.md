@@ -7,7 +7,7 @@ Après  vous  n'avez  plus  qu'à  lancer  l'exécutable (.exe) pour  lancer  le
 # Configuration
 Au premier lancement, le programme va vous poser des questions : 
 
-> l'adresse du serveur de mise à jour
+> l'adresse du serveur de mise à jour  
 > le chemin d'accès du dossier du modpack
 
 Normalement, vous n'avez pas besoin de changer l'adresse;
