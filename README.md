@@ -2,8 +2,8 @@
 Un programme servant à mettre à jour les fichiers d'un modpack minecraft. 
 # Installation
 Vous devez premièrement installer le modpack `[modpack]` sur Curseforge comme un modpack normal, une fois celui-ci installé,
-vous  pouvez  télécharger  l'exécutable  correspondant  à  votre  système  d'exploitation [ici](https://github.com/Kensaa/minecraft-nation-updater-client/releases). Une  fois  téléchargé, je  vous  conseille  de  placer  cet exécutable  dans  un  dossier (pas  sur  votre  bureau  quoi) car  le  programme  crée  un ou plusieurs fichiers une fois lancés (après  vous  faites  ce  que vous voulez).
-Après  vous  n'avez  plus  qu'à  lancer  l'exécutable (.exe) pour  lancer  le  programme.
+vous  pouvez  télécharger  l'exécutable  correspondant  à  votre  système  d'exploitation [ici](https://github.com/Kensaa/minecraft-nation-updater-client/releases). 
+Une  fois  téléchargé, je  vous  conseille  de  placer  cet exécutable  dans  un  dossier (pas  sur  votre  bureau  quoi) car  le  programme  crée  un ou plusieurs fichiers une fois lancés (après  vous  faites  ce  que vous voulez).
 # Configuration
 Au premier lancement, le programme va vous poser des questions : 
 
