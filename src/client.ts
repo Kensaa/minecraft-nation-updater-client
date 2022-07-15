@@ -2,7 +2,7 @@ import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path'
 import * as os from 'os'
-import {prompt,getHash,urlJoin,jsonFetch} from './utils'
+import {prompt,getHash,urlJoin,jsonFetch,folderTree} from './utils'
 
 //kinda cringe
 process.emitWarning = ()=>{}
@@ -56,11 +56,9 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
     const hashes = await jsonFetch(urlJoin(config.server,'hashes'))
     const blacklist = await jsonFetch(urlJoin(config.server,'blacklist')) as string[]
 
-    const remotefiles = discoverHashTree(hashes);
+    const remotefiles = flatenFileTree(hashes);
+    const localFiles = flatenFileTree(await folderTree(config.minecraftLocation) as {[k: string]: Object | string});
 
-    const localFiles = discoverHashTree(await folderHash(config.minecraftLocation) as {[k: string]: Object | string});
-
-    //check existing file on client
     for(const file of localFiles){
         if(blacklist.find(e => file.path.includes(e)))continue
         const remote = remotefiles.find(e => e.path === file.path)
@@ -79,9 +77,10 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
             }
         }else{
             //file exist on server, check hash
-            if(file.hash !== remote.hash){
+            const localHash = await getHash(path.join(config.minecraftLocation,file.path))
+            if(localHash !== remote.hash){
                 //file has changed, update it
-                await updateFile(file.path)
+                updateFile(file.path)
                 console.log("    Mise à jour du fichier : " + file.path)
             }
             //remove file from remotefiles
@@ -92,7 +91,7 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
     for(const file of remotefiles){
         if(blacklist.find(e => file.path.includes(e)))continue
         console.log("    Ajout du fichier : " + file.path)
-        await updateFile(file.path)
+        updateFile(file.path)
     }
     console.log("\nMise à jour terminée")
     await prompt('Appuyez sur entrer pour quitter');
@@ -100,7 +99,7 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
 })()
 
 
-function discoverHashTree(tree:{[k: string]: Object | string},filePath:string[]=[]): {path:string,hash:string}[]{
+function flatenFileTree(tree:{[k: string]: Object | string},filePath:string[]=[]): {path:string,hash:string}[]{
     const res = []
     const keys = Object.keys(tree);
     for(let key of keys){
@@ -108,25 +107,10 @@ function discoverHashTree(tree:{[k: string]: Object | string},filePath:string[]=
             res.push({path:path.join(...filePath, key), hash:tree[key] as string})
         }
         else{
-            res.push(...discoverHashTree(tree[key] as {[k: string]: Object | string},[...filePath,key]));
+            res.push(...flatenFileTree(tree[key] as {[k: string]: Object | string},[...filePath,key]));
         }
     }
     return res;
-}
-
-async function folderHash(src: string): Promise<Object | string> {
-    if (fs.statSync(src).isFile()) {
-        return await getHash(src)
-    } else {
-        const res: {[k: string]: Object | string} = {}
-        const files = fs.readdirSync(src)
-        for (const file of files) {
-            const filePath = path.join(src, file)
-            const fileInfo = await folderHash(filePath)
-            res[file] = fileInfo
-        }
-        return res
-    }
 }
 
 async function updateFile(src:string){
