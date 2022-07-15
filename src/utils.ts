@@ -28,3 +28,7 @@ export function getHash(src:string):Promise<string>{
 export function urlJoin(...args: string[]) {
     return encodeURI(args.map(e=>e.replace(/\\/g,'/')).join('/').replace(/\/+/g,'/'));
 }
+
+export async function jsonFetch(url: string): Promise<any> {
+    return (await fetch(url)).json()
+}

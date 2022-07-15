@@ -2,7 +2,7 @@ import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path'
 import * as os from 'os'
-import {prompt,getHash,urlJoin} from './utils'
+import {prompt,getHash,urlJoin,jsonFetch} from './utils'
 
 //kinda cringe
 process.emitWarning = ()=>{}
@@ -42,23 +42,49 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
     await prompt('Appuyez sur entrer pour commencer la mise à jour');
 
 
-    const hashes = await (await fetch(urlJoin(config.server,'hashes'))).json();
+    const hashes = await jsonFetch(urlJoin(config.server,'hashes'))
+    const blacklist = await jsonFetch(urlJoin(config.server,'blacklist')) as string[]
+
     const remotefiles = discoverHashTree(hashes);
 
     const localFiles = discoverHashTree(await folderHash(config.minecraftLocation) as {[k: string]: Object | string});
 
-    for(let remoteFile of remotefiles){
-        const localFile = localFiles.find(x=>x.path === remoteFile.path)
-        if(!localFile){
-            console.log(`    Nouveau fichier : ${remoteFile.path}`)
-            await updateFile(remoteFile.path)
-        }else{
-            if(localFile.hash !== remoteFile.hash){
-                console.log(`    Fichier modifié : ${remoteFile.path}`)
-                await updateFile(remoteFile.path)
+    fs.writeFileSync('debug.json',JSON.stringify(localFiles,null,4))
+    //check existing file on client
+    for(const file of localFiles){
+        if(blacklist.find(e => file.path.includes(e)))continue
+        const remote = remotefiles.find(e => e.path === file.path)
+        if(!remote){
+            //file dosnt exist on server, delete it
+            fs.rmSync(path.join(config.minecraftLocation,file.path))
+            console.log("    Suppression du fichier : " + file.path)
+
+            //check if deleted file was the last of the folder
+            const folder = path.dirname(file.path)
+            const files = fs.readdirSync(path.join(config.minecraftLocation,folder))
+            if(files.length === 0){
+                //delete folder
+                fs.rmdirSync(path.join(config.minecraftLocation,folder))
+                console.log("    Suppression du dossier : " + folder)
             }
+        }else{
+            //file exist on server, check hash
+            if(file.hash !== remote.hash){
+                //file has changed, update it
+                await updateFile(file.path)
+                console.log("    Mise à jour du fichier : " + file.path)
+            }
+            //remove file from remotefiles
+            remotefiles.splice(remotefiles.findIndex(e => e.path === file.path),1)
         }
     }
+    //download file that are not on client
+    for(const file of remotefiles){
+        if(blacklist.find(e => file.path.includes(e)))continue
+        console.log("    Ajout du fichier : " + file.path)
+        await updateFile(file.path)
+    }
+    console.log("\nMise à jour terminée")
     await prompt('Appuyez sur entrer pour quitter');
 
 })()
