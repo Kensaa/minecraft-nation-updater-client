@@ -7,7 +7,7 @@ import {prompt,getHash,urlJoin,jsonFetch,folderTree} from './utils'
 //kinda cringe
 process.emitWarning = ()=>{}
 
-const VERSION = "1.0.0"
+const VERSION = "1.1.0"
 const configFileName = "config.json"
 
 const configFileFolder = os.platform() === 'win32' ? os.homedir()+"\\Appdata\\Roaming\\MinecraftNationUpdater" : os.homedir()+"/.minecraftNationUpdater"
