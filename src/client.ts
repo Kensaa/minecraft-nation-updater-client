@@ -80,7 +80,7 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
             const localHash = await getHash(path.join(config.minecraftLocation,file.path))
             if(localHash !== remote.hash){
                 //file has changed, update it
-                updateFile(file.path)
+                await updateFile(file.path)
                 console.log("    Mise à jour du fichier : " + file.path)
             }
             //remove file from remotefiles
@@ -91,7 +91,7 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
     for(const file of remotefiles){
         if(blacklist.find(e => file.path.includes(e)))continue
         console.log("    Ajout du fichier : " + file.path)
-        updateFile(file.path)
+        await updateFile(file.path)
     }
     console.log("\nMise à jour terminée")
     await prompt('Appuyez sur entrer pour quitter');
