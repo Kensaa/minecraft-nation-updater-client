@@ -16,9 +16,8 @@ const configFileLocation = path.join(configFileFolder,configFileName)
 
 //to change later
 const defaultConfig = {
-    //server:"http://109.10.7.118:15006/",
-    server:"http://localhost:3001/",
-    minecraftLocation:os.platform() === 'win32' ? os.homedir() + "\\curseforge\\atm8" : 'unknown'
+    server:"http://109.10.7.118:15006",
+    minecraftLocation:os.platform() === 'win32' ? os.homedir() + "\\curseforge\\minecraft\\Instances\\All the Mods 7 - ATM7 - 1.18.2" : 'unknown'
 }
 
 const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(configFileLocation, 'utf8')) : defaultConfig;
