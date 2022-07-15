@@ -49,7 +49,6 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
 
     const localFiles = discoverHashTree(await folderHash(config.minecraftLocation) as {[k: string]: Object | string});
 
-    fs.writeFileSync('debug.json',JSON.stringify(localFiles,null,4))
     //check existing file on client
     for(const file of localFiles){
         if(blacklist.find(e => file.path.includes(e)))continue
