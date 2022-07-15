@@ -7,22 +7,28 @@ import {prompt,getHash,urlJoin} from './utils'
 //kinda cringe
 process.emitWarning = ()=>{}
 
+const configFileName = "config.json"
+
+const configFileFolder = os.platform() === 'win32' ? os.homedir()+"\\Appdata\\Roaming\\MinecraftNationUpdater" : os.homedir()+"/.minecraftNationUpdater"
+
+if(!fs.existsSync(configFileFolder)) fs.mkdirSync(configFileFolder,{recursive:true});
+const configFileLocation = path.join(configFileFolder,configFileName)
+
 //to change later
 const defaultConfig = {
+    //server:"http://109.10.7.118:15006/",
     server:"http://localhost:3001/",
     minecraftLocation:os.platform() === 'win32' ? os.homedir() + "\\curseforge\\atm8" : 'unknown'
 }
 
-const config = fs.existsSync('config.json') ? JSON.parse(fs.readFileSync('config.json', 'utf8')) : defaultConfig;
-
-
+const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(configFileLocation, 'utf8')) : defaultConfig;
 
 (async ()=>{
     console.log('Minecraft Nation Updater')
     console.log("\nCe programme mettra à jour votre version du modpack afin d'appliquer les dernières modifications.")
     console.log("\nEn cas d'erreur vous pouvez contacter Kensa#4948 sur discord ou créer une issue sur le github du projet : ")
     console.log("https://github.com/Kensaa/minecraft-nation-updater-client")
-    if(!fs.existsSync('config.json')){
+    if(!fs.existsSync(configFileLocation)){
         console.log("\nIl semblerait que c\'est votre première utilisation de ce programme. Veuillez repondre aux questions suivantes.\nLaissez les champs vides pour les valeurs par défaut.\n")
         const server = await prompt("    Quelle est l'adresse du serveur de mise a jour ? (par defaut : " + defaultConfig.server + ") : ");
         if(server.trim() !== '')config.server = server;
@@ -30,7 +36,7 @@ const config = fs.existsSync('config.json') ? JSON.parse(fs.readFileSync('config
         const location = await prompt("    Quelle est le dossier d'installation de votre modpack ?\n    (Vous pouvez la voire depuis Curseforge en faisant \"ouvrir le dossier\")\n    (par defaut : " + defaultConfig.minecraftLocation + ") : ");
         if(location.trim() !== '')config.minecraftLocation = location;
 
-        fs.writeFileSync('config.json', JSON.stringify(config, null, 4));
+        fs.writeFileSync(configFileLocation, JSON.stringify(config, null, 4));
     }
     console.log()
     await prompt('Appuyez sur entrer pour commencer la mise à jour');
