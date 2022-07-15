@@ -7,6 +7,7 @@ import {prompt,getHash,urlJoin,jsonFetch} from './utils'
 //kinda cringe
 process.emitWarning = ()=>{}
 
+const VERSION = "1.0.0"
 const configFileName = "config.json"
 
 const configFileFolder = os.platform() === 'win32' ? os.homedir()+"\\Appdata\\Roaming\\MinecraftNationUpdater" : os.homedir()+"/.minecraftNationUpdater"
@@ -27,6 +28,9 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
     console.log("\nCe programme mettra à jour votre version du modpack afin d'appliquer les dernières modifications.")
     console.log("\nEn cas d'erreur vous pouvez contacter Kensa#4948 sur discord ou créer une issue sur le github du projet : ")
     console.log("https://github.com/Kensaa/minecraft-nation-updater-client")
+
+    
+    
     if(!fs.existsSync(configFileLocation)){
         console.log("\nIl semblerait que c\'est votre première utilisation de ce programme. Veuillez repondre aux questions suivantes.\nLaissez les champs vides pour les valeurs par défaut.\n")
         const server = await prompt("    Quelle est l'adresse du serveur de mise a jour ? (par defaut : " + defaultConfig.server + ") : ");
@@ -34,8 +38,16 @@ const config = fs.existsSync(configFileLocation) ? JSON.parse(fs.readFileSync(co
         console.log()
         const location = await prompt("    Quelle est le dossier d'installation de votre modpack ?\n    (Vous pouvez la voire depuis Curseforge en faisant \"ouvrir le dossier\")\n    (par defaut : " + defaultConfig.minecraftLocation + ") : ");
         if(location.trim() !== '')config.minecraftLocation = location;
-
+        
         fs.writeFileSync(configFileLocation, JSON.stringify(config, null, 4));
+    }
+
+    //Check if there is a new version available
+    const newVersion = (await jsonFetch(urlJoin(config.server,'version')) as {version:string}).version;
+    if(newVersion !== VERSION){
+        //new version available
+        console.log('\nUne nouvelle version est disponible, merci de mettre à jour ce programme en téléchargeant la nouvelle version ici : https://github.com/Kensaa/minecraft-nation-updater-client/releases')
+        process.exit(0);
     }
     console.log()
     await prompt('Appuyez sur entrer pour commencer la mise à jour');
