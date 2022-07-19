@@ -33,4 +33,4 @@ mais pour le dossier d'installation, je vous conseille de copier-coller le chemi
 
 # Contact
 
-En cas de problème avec le programme ou de question, merci de me contacter sur discord : `Kensa#4948` ou [ici](https://github.com/Kensaa/minecraft-nation-updater-server/issues).
+En cas de problème avec le programme ou de question, merci de me contacter sur discord : `Kensa#4948` ou [ici](https://github.com/Kensaa/minecraft-nation-updater-server/issues) (par contre si votre prénom est Timéo, aller cordialement vous faire enculer).
