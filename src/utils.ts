@@ -1,21 +1,21 @@
 import {createHash} from 'crypto'
 import {createReadStream} from 'fs'
-import { createInterface } from "readline";
-import * as fs from 'fs';
-import * as path from 'path';
+import { createInterface } from 'readline'
+import * as fs from 'fs'
+import * as path from 'path'
 
 
 export function prompt(question: string): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const rl = createInterface({
             input: process.stdin,
             output: process.stdout
-        });
+        })
         rl.question(question, (answer) => {
-            rl.close();
-            resolve(answer);
-        });
-    });
+            rl.close()
+            resolve(answer)
+        })
+    })
 }
 export function getHash(src:string):Promise<string>{
     return new Promise<string>((resolve,reject)=>{
@@ -29,18 +29,18 @@ export function getHash(src:string):Promise<string>{
 }
 
 export function urlJoin(...args: string[]) {
-    return encodeURI(args.map(e=>e.replace(/\\/g,'/')).join('/').replace(/\/+/g,'/'));
+    return encodeURI(args.map(e=>e.replace(/\\/g,'/')).join('/').replace(/\/+/g,'/'))
 }
 
-export async function jsonFetch(url: string): Promise<any> {
+export async function jsonFetch(url: string): Promise<unknown> {
     return (await fetch(url)).json()
 }
 
-export async function folderTree(src: string): Promise<Object | string> {
+export async function folderTree(src: string): Promise<Record<string, unknown> | string> {
     if (fs.statSync(src).isFile()) {
-        return ""
+        return ''
     } else {
-        const res: {[k: string]: Object | string} = {}
+        const res: {[k: string]: Record<string, unknown> | string} = {}
         const files = fs.readdirSync(src)
         for (const file of files) {
             const filePath = path.join(src, file)
@@ -51,11 +51,11 @@ export async function folderTree(src: string): Promise<Object | string> {
     }
 }
 
-export async function hashTree(src: string): Promise<Object | string> {
+export async function hashTree(src: string): Promise<Record<string, unknown> | string> {
     if (fs.statSync(src).isFile()) {
         return await getHash(src)
     } else {
-        const res: {[k: string]: Object | string} = {}
+        const res: {[k: string]: Record<string, unknown> | string} = {}
         const files = fs.readdirSync(src)
         for (const file of files) {
             const filePath = path.join(src, file)
