@@ -5,7 +5,7 @@ Un programme servant à mettre à jour les fichiers d'un modpack minecraft.
 
 # Installation
 
-Vous devez premièrement installer le modpack `[modpack]` sur Curseforge comme un modpack normal.
+Vous devez premièrement installer le modpack `All The Mods 7` sur Curseforge comme un modpack normal.
 
 Une fois celui-ci installé, vous pouvez télécharger l'exécutable correspondant à votre système d'exploitation [ici](https://github.com/Kensaa/minecraft-nation-updater-client/releases), puis le lancer.
 <!---
