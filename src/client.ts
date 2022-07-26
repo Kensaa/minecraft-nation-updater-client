@@ -27,9 +27,14 @@ const defaultConfig = {
     lang:'fr'
 }
 
+
 const config = fs.existsSync(configFileLocation)
     ? JSON.parse(fs.readFileSync(configFileLocation, 'utf8'))
     : defaultConfig
+
+if(!config.lang) {
+    config.lang = 'fr'
+}
 
 const lang = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'langs', config.lang+'.json'), 'utf8'));
 
