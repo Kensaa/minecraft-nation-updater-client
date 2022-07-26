@@ -12,7 +12,7 @@ const VERSION = '1.2.0'
 const configFileName = 'config.json'
 
 const configFileFolder = os.platform() === 'win32'
-    ? os.homedir()+'\\Appdata\\Roaming\\MinecraftNationUpdater"'
+    ? os.homedir()+'\\Appdata\\Roaming\\MinecraftNationUpdater'
     : os.homedir()+'/.minecraftNationUpdater'
 
 if(!fs.existsSync(configFileFolder)) fs.mkdirSync(configFileFolder,{recursive:true})
