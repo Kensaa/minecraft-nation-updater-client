@@ -20,7 +20,7 @@ if(!fs.existsSync(configFileFolder)) fs.mkdirSync(configFileFolder,{recursive:tr
 const configFileLocation = path.join(configFileFolder,configFileName)
 
 const defaultConfig = {
-    server: 'http://109.10.7.118:15006',
+    server: 'http://direct.grenaan.tk/15006',
     minecraftLocation: os.platform() === 'win32'
         ? os.homedir() + '\\curseforge\\minecraft\\Instances\\All the Mods 7 - ATM7 - 1.18.2' 
         : 'unknown',
