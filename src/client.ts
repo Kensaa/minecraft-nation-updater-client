@@ -8,7 +8,7 @@ import {prompt,getHash,urlJoin,jsonFetch,folderTree} from './utils'
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 process.emitWarning = () => {}
 
-const VERSION = '1.2.0'
+const VERSION = '1.2.1'
 const configFileName = 'config.json'
 
 const configFileFolder = os.platform() === 'win32'
