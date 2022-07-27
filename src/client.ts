@@ -35,6 +35,11 @@ const config = fs.existsSync(configFileLocation)
 if(!config.lang) {
     config.lang = 'fr'
 }
+// dont mind this, it's here to fix some stupid error I made
+if(config.server == "http://direct.grenaan.tk/15006"){
+  config.server = "http://direct.grenaan.tk:15006"
+  fs.writeFileSync(configFileLocation, JSON.stringify(config, null, 4))
+}
 
 const lang = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'langs', config.lang+'.json'), 'utf8'));
 
