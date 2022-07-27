@@ -8,7 +8,7 @@ import {prompt,getHash,urlJoin,jsonFetch,folderTree} from './utils'
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 process.emitWarning = () => {}
 
-const VERSION = '1.2.2'
+const VERSION = '1.2.3'
 const configFileName = 'config.json'
 
 const configFileFolder = os.platform() === 'win32'
@@ -20,7 +20,7 @@ if(!fs.existsSync(configFileFolder)) fs.mkdirSync(configFileFolder,{recursive:tr
 const configFileLocation = path.join(configFileFolder,configFileName)
 
 const defaultConfig = {
-    server: 'http://direct.grenaan.tk/15006',
+    server: 'http://direct.grenaan.tk:15006',
     minecraftLocation: os.platform() === 'win32'
         ? os.homedir() + '\\curseforge\\minecraft\\Instances\\All the Mods 7 - ATM7 - 1.18.2' 
         : 'unknown',
